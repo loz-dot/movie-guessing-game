@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<div>
+    <head>
+        <title>Main</title>
+
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'movie_app/style.css' %}">
+        <script src="{% static 'movie_app/script.js' %}"></script>
+    </head>
+
+    <body>
+        <h1>Movie Matching Game</h1>
+        <h2>Below there are four films. Write the name of the actor who's starred in all four films!</h2>
+
+        <table>
+            <tr>
+                <td>
+                    <img src="{{ actor.poster_one }}"
+                    height="250" width="150">
+                </td>
+                <td>
+                    <img src="{{ actor.poster_two }}"
+                    height="250" width="150">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <img src="{{ actor.poster_three }}"
+                    height="250" width="150">
+                </td>
+                <td>
+                    <img src="{{ actor.poster_four }}"
+                    height="250" width="150">
+                </td>
+            </tr>
+        </table>
+
+        <form action="{% url 'evaluate' %}" method="POST">
+            {% csrf_token %}
+            <label for="name">Enter actor name: </label>
+            <input type="hidden" name="actor" value="{{ actor.name }}">
+            <input type=text name="name" id="name">
+            <input type="submit" id="button">
+        </form>
+
+        {% if form_submitted %}
+            {% if is_correct %}
+            <div id="correctID">
+                <h2>Congratulations! That is correct!</h2>
+                <button id="continue">Continue</button>
+            </div>
+
+            {% else %}
+            <div id="incorrectID">
+                <h2>Sorry, that is incorrect. The correct answer is {{ actor.name }}</h2>
+                <button id="continue">Continue</button>
+            </div>
+            {% endif %}
+        {% endif %}
+
+    </body>
+</div>
+</html>
